@@ -35,7 +35,7 @@ Fibonacci numbers: https://en.wikipedia.org/wiki/Fibonacci_number
 ### Week 11-12
 #### Assignment: Tic Tac Toe game
 
-## Rust docs
+## Rust Resources
   * [web](https://www.rust-lang.org)
   * [book](https://doc.rust-lang.org/book/)
   * [examples](http://rustbyexample.com/)

@@ -1,15 +1,29 @@
 # learning-rust
 Palmtree 'learning Rust' Week 1
 
-## Assignment 1: Install Rust
+## Assignment 1: 
+* Install Rust
 ```bash
 $ ./assignment_01/install_ubuntu.sh
 ```
 
-## Assignment 2: Hello World
+* Hello World
 ```bash
-$ rustc -o assignment_02/hello assignment_02/hello.rs
-$ ./assignment_02/hello
+$ rustc -o assignment_01/hello assignment_02/hello.rs
+$ ./assignment_01/hello
+```
+
+
+## Assignment 2: 
+```bash
+$ cd assignment_02/fibonnaci
+$ cargo run
+```
+
+## Assignment 3: 
+```bash
+$ cd assignment_03/guessing
+$ cargo run
 ```
 
 ## Extras
@@ -25,6 +39,8 @@ $ cargo run
 $ cd extras && cargo new hello_name --bin
 $ cd hello_name
 ```
+
+Modify src/main.rs
 ```rust
 use std::env;
 
