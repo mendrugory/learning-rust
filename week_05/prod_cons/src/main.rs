@@ -8,31 +8,27 @@ use rand::Rng;
 use std::fmt::Display;
 
 fn main() {
-
-    let (tx, rx): (Sender<i32>, Receiver<i32>) = mpsc::channel();
-
-    thread::spawn(move || {
-        loop{
-            match rx.recv() {
-                Ok(msg) => consume(msg),
-                Err(error) => println!("Error: {}", error),
-            }
-        }
-    });
-
-    let mut message: i32 = 1;
+    let (tx, rx): (Sender<u32>, Receiver<u32>) = mpsc::channel();
+    thread::spawn(move || consume(rx));
+    let mut message: u32 = 0;
     loop{
         message = produce(&tx, message + 1);
     }
-    
 }
 
-fn consume<T: Display>(message: T) {
-    println!("--- Received Message: {}", message);
-    println!("--- Consuming Message: {}", message);
-    random_sleep_time();
-    println!("--- Message {} consumed", message);
-    println!(" ");
+fn consume<T: Display>(rx: Receiver<T>) {
+    loop{
+        match rx.recv() {
+            Ok(message) => {
+                println!("--- Received Message: {}", message);
+                println!("--- Consuming Message: {}", message);
+                random_sleep_time();
+                println!("--- Message {} consumed", message);
+                println!(" ");
+            },
+            Err(error) => println!("Error: {}", error),
+        }
+    }
 }
 
 fn produce<T: Display + Copy>(tx: &Sender<T>, message: T) -> T {
