@@ -21,7 +21,6 @@ Fibonacci numbers: https://en.wikipedia.org/wiki/Fibonacci_number
 ### Week 3-4
 #### Assignment 1: Reverse string algorithm
 #### Assignment 2: Quicksort algorithm
-#### Assignment 3: Simple calculator app
 
 ### Week 5-6
 #### Assignment: Producer-Consumer concurrency

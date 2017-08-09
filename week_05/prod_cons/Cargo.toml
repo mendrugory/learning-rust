@@ -1,0 +1,7 @@
+[package]
+name = "prod_cons"
+version = "0.1.0"
+authors = ["mendrugory <mendrugory@gmail.com>"]
+
+[dependencies]
+rand = "0.3.16"
