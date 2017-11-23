@@ -1,0 +1,10 @@
+[package]
+name = "wiki_scraper"
+version = "0.1.0"
+authors = ["mendrugory <mendrugory@gmail.com>"]
+
+[dependencies]
+futures = "0.1"
+hyper = "0.11"
+tokio-core = "0.1"
+hyper-native-tls = "0.2.4"
