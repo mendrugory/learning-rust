@@ -1,19 +1,24 @@
-extern crate futures;
 extern crate hyper;
+extern crate hyper_tls;
 extern crate tokio_core;
-extern crate hyper_native_tls;
 
-use std::io::{self, Write};
-use futures::{Future, Stream};
 use hyper::Client;
+use hyper_tls::HttpsConnector;
 use tokio_core::reactor::Core;
-use hyper_native_tls::NativeTlsClient;
-use hyper_native_tls::HttpsConnector;
+use std::io::Read;
 
 fn main() {
-    let ssl = NativeTlsClient::new().unwrap();
-    let connector = HttpsConnector::new(ssl);
-    let client = Client::with_connector(connector);
-    let mut res = client.get("https://google.com").send().unwrap();
-    println!("{:?}", res.body());
+    let mut core = Core::new().unwrap();
+    let handle = core.handle();
+    let client = Client::configure()
+        .connector(HttpsConnector::new(4, &handle).unwrap())
+        .build(&handle);
+
+    let req = client.get("https://hyper.rs".parse().unwrap());
+    let res = core.run(req).unwrap();
+    println!("{}", res.status());
+
+    /*let mut body = vec![];
+    res.read_to_end(&mut body).unwrap();
+    println!("{}", String::from_utf8_lossy(&body));*/
 }
