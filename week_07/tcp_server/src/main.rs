@@ -1,4 +1,4 @@
-use std::io::{Write, Read};
+use std::io::{Write, BufReader, BufRead, BufWriter};
 use std::net::{TcpListener, TcpStream};
 use std::thread;
 
@@ -20,11 +20,14 @@ fn main() {
 }
 
 fn communication(mut stream: TcpStream) {
-    let _ = stream.write(b"Welcome to the TCP server.\r\n");
+    let _ = stream.write("Welcome to the TCP server.\r\n".as_bytes());
+    let mut reader_buffer = BufReader::new(&stream);
+    let mut writer_buffer = BufWriter::new(&stream);
     loop {
-        let mut buffer: [u8; 512] = [0; 512];
-        let _ = stream.read(&mut buffer);
-        println!("Server received: {:?}", String::from_utf8_lossy(&buffer));
-        let _ = stream.write(b"Message was received.\r\n");
+        let mut response = String::new();
+        reader_buffer.read_line(&mut response).expect("could not read");
+        println!("Server received: {}", response.trim());
+        writer_buffer.write_all("Message was received.\r\n".as_bytes()).expect("could not write");
+        writer_buffer.flush().expect("could not flush");
     }
 }

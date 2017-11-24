@@ -1,5 +1,5 @@
-use std::io::{Write, Read};
-use std::net::TcpStream;
+use std::io::{BufReader, Write, BufRead, BufWriter};
+use std::net::{TcpStream, Shutdown};
 use std::time;
 use std::thread;
 
@@ -11,13 +11,17 @@ fn main() {
     }
 }
 
-fn communication(mut stream: TcpStream) {
+fn communication(stream: TcpStream) {
     for _ in 1..10 {
-        let mut buffer: [u8; 512] = [0; 512];
-        let _ = stream.read(&mut buffer);
-        println!("I received: {:?}", String::from_utf8_lossy(&buffer));
-        let _ = stream.write(b"Hola");
-        let sleep_time = time::Duration::from_millis(100000);
+        let mut reader_buffer = BufReader::new(&stream);
+        let mut writer_buffer = BufWriter::new(&stream);
+        let mut response = String::new();
+        reader_buffer.read_line(&mut response).expect("could not read");
+        println!("I received: {:?}", response.trim());
+        writer_buffer.write_all("Hola.\r\n".as_bytes()).expect("could not write");
+        writer_buffer.flush().expect("could not flush");
+        let sleep_time = time::Duration::from_millis(1000);
         thread::sleep(sleep_time);
     }
+    stream.shutdown(Shutdown::Both).expect("shutdown call failed");
 }
